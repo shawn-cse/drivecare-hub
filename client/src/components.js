@@ -58,7 +58,7 @@ export function timelineItem(text) {
   return `<div class="timeline-item">${icon("calendar", 17)}<span>${escapeHtml(text)}</span></div>`;
 }
 
-export function appShell(user, activePage, notice = null) {
+export function appShell(user, activePage, notice = null, { demoMode = false } = {}) {
   const availableItems = navigationItems.filter((item) => !item.adminOnly || user.role === "admin");
   const active = availableItems.find((item) => item.id === activePage) || availableItems[0];
   const navigation = availableItems.map((item) => `
@@ -66,6 +66,8 @@ export function appShell(user, activePage, notice = null) {
       ${icon(item.icon, 19)}<span>${escapeHtml(item.label)}</span>
     </button>`).join("");
   const toast = notice ? `<div class="toast toast--${notice.type === "error" ? "error" : "success"}" role="status">${escapeHtml(notice.message)}</div>` : "";
+
+  const demoBanner = demoMode ? `<div class="demo-banner"><div><strong>GitHub Pages demo mode</strong><span>Data is stored only in this browser. The complete Node.js backend remains in the repository.</span></div><button class="button button--secondary button--compact" id="reset-demo-button" type="button">Reset demo data</button></div>` : "";
 
   return `<div class="app-shell">
     <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Open navigation">${icon("menu", 22)}</button>
@@ -77,7 +79,8 @@ export function appShell(user, activePage, notice = null) {
       <button class="logout-button" id="logout-button" type="button">${icon("logout", 18)} Sign out</button>
     </aside>
     <main class="workspace">
-      <div class="workspace__bar"><div><strong>${escapeHtml(active.label)}</strong><span>${escapeHtml(active.description)}</span></div><div class="status-dot"><span></span> API connected</div></div>
+      <div class="workspace__bar"><div><strong>${escapeHtml(active.label)}</strong><span>${escapeHtml(active.description)}</span></div><div class="status-dot"><span></span> ${demoMode ? "Demo data active" : "API connected"}</div></div>
+      ${demoBanner}
       ${toast}
       <div id="page-content"></div>
     </main>

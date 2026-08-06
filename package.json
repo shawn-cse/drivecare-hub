@@ -1,6 +1,6 @@
 {
   "name": "drivecare-hub",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "A full-stack vehicle, fuel, maintenance, insurance and location management platform.",
   "author": {

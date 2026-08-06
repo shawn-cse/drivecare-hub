@@ -1,4 +1,4 @@
-import { apiRequest, getToken, saveToken } from "./api.js";
+import { apiRequest, getToken, isDemoMode, saveToken } from "./api.js";
 import { appShell, brand } from "./components.js";
 import { emptyData } from "./constants.js";
 import { adminView } from "./views/admin.js";
@@ -16,7 +16,7 @@ class DriveCareApp {
     this.root = root;
     this.user = null;
     this.data = structuredClone(emptyData);
-    this.activePage = "dashboard";
+    this.activePage = new URLSearchParams(window.location.search).get("page") || "dashboard";
     this.authMode = "login";
     this.authError = "";
     this.directoryForm = "pump";
@@ -58,7 +58,7 @@ class DriveCareApp {
     }
 
     if (this.activePage === "admin" && this.user.role !== "admin") this.activePage = "dashboard";
-    this.root.innerHTML = appShell(this.user, this.activePage, this.notice);
+    this.root.innerHTML = appShell(this.user, this.activePage, this.notice, { demoMode: isDemoMode() });
     this.bindShell();
     this.renderPage();
   }
@@ -107,6 +107,7 @@ class DriveCareApp {
       button.addEventListener("click", () => this.navigate(button.dataset.page));
     });
     this.root.querySelector("#logout-button")?.addEventListener("click", () => this.logout());
+    this.root.querySelector("#reset-demo-button")?.addEventListener("click", () => this.resetDemo());
   }
 
   navigate(page) {
@@ -170,6 +171,19 @@ class DriveCareApp {
     } catch (error) {
       this.showNotice(error.message, "error");
       return false;
+    }
+  }
+
+  async resetDemo() {
+    if (!window.confirm("Reset the browser demo to its original sample data?")) return;
+    try {
+      const payload = await apiRequest("/api/demo/reset", { method: "POST" });
+      this.user = payload.user;
+      this.data = payload.data;
+      this.activePage = "dashboard";
+      this.showNotice("Demo data restored.", "success");
+    } catch (error) {
+      this.showNotice(error.message, "error");
     }
   }
 

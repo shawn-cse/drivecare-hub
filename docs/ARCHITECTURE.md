@@ -1,32 +1,44 @@
 # DriveCare Hub Architecture
 
-## Request flow
+## Two operating modes
 
 ```text
-Browser
+GitHub Pages
+Browser demo adapter
   │
   ├── Static HTML, CSS, and JavaScript
+  ├── Sample records
+  └── Browser localStorage
+
+Full-stack deployment
+Browser frontend
   │
-  └── Fetch API requests
+  └── Fetch API
           │
           ▼
-Node.js HTTP Server
+Node.js HTTP server
   │
-  ├── CORS and security headers
-  ├── Authentication and session verification
+  ├── Security headers and CORS
+  ├── Authentication and sessions
   ├── Role-based data filtering
-  ├── Request validation
-  ├── CRUD operations
+  ├── Validation and CRUD operations
   │
   ▼
-Atomic JSON Database
+Atomic JSON database
 ```
 
 ## Frontend design
 
-The frontend is divided into reusable rendering helpers and feature views. Each view returns HTML and a mount function that attaches only the event listeners needed for that screen. The main application owns session state, navigation, notices, and data refreshes.
+The frontend is divided into reusable rendering helpers and feature views. Each view returns HTML and a mount function that attaches only the event listeners needed for that screen. The main application manages session state, navigation, notices, and data updates.
 
-User-provided values are escaped before being inserted into HTML. API communication is centralised in `client/src/api.js`.
+`client/src/api.js` selects the correct data layer:
+
+- A real HTTP API for local or hosted full-stack use.
+- A browser-only demo adapter on GitHub Pages or when `?demo=1` is present.
+
+Sample demo records are stored in `client/src/demo-data.js`.
+
+User-provided values are escaped before being inserted into HTML.
 
 ## Backend design
 
@@ -38,4 +50,4 @@ Passwords are stored as PBKDF2-SHA512 hashes with per-user random salts. Session
 
 Database changes are written to a temporary file and then atomically renamed. This reduces the risk of leaving a partially written JSON document after an interrupted write.
 
-For horizontal scaling, replace `server/lib/database.mjs` with a database adapter for PostgreSQL or another transactional database while preserving the API contracts.
+For horizontal scaling, replace `server/lib/database.mjs` with an adapter for PostgreSQL or another transactional database while preserving the API contracts.

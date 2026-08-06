@@ -1,78 +1,89 @@
 # DriveCare Hub
 
-**A secure, full-stack vehicle, fuel, mileage, maintenance, insurance, and location management platform.**
+**A complete vehicle, fuel, mileage, maintenance, insurance, location, and service-directory management platform.**
 
 [![Node.js](https://img.shields.io/badge/Node.js-20.11%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES%20Modules-F7DF1E?logo=javascript&logoColor=111827)](https://developer.mozilla.org/docs/Web/JavaScript)
-[![Tests](https://img.shields.io/badge/Automated%20Tests-Passing-16a34a)](#quality-assurance)
+[![Tests](https://img.shields.io/badge/Automated%20Tests-7%20Passing-16a34a)](#quality-assurance)
 [![License](https://img.shields.io/badge/License-MIT-2563eb)](LICENSE)
 
-## Project name
+## Live demo
 
-The project has been renamed from **VeloNexus** to **DriveCare Hub**.
+**GitHub Pages:** [https://shawn-cse.github.io/drivecare-hub/](https://shawn-cse.github.io/drivecare-hub/)
 
-The new name is easier to understand in real life:
+The GitHub Pages website runs in **browser demo mode**. It opens with realistic sample data and stores demo changes in the visitor's browser using `localStorage`.
 
-- **Drive** clearly connects the product to vehicles and journeys.
-- **Care** represents fuel, maintenance, insurance, and responsible ownership.
-- **Hub** communicates that all vehicle records are managed in one place.
+The complete secure Node.js backend is also included in this repository, but GitHub Pages publishes only the static frontend from the `client/` directory.
 
-Recommended GitHub repository name:
-
-```text
-drivecare-hub
-```
-
-## Overview
-
-DriveCare Hub gives vehicle owners, drivers, petrol pump owners, garage owners, and administrators one organised workspace for managing daily vehicle operations.
-
-The rebuilt version includes a real Node.js backend, secure authentication, server-side role filtering, persistent JSON storage, a responsive user interface, input validation, record deletion, mileage calculation, insurance alerts, maintenance reminders, and automated tests.
-
-## Main features
-
-| Module | Capabilities |
-|---|---|
-| Authentication | Registration, login, logout, password hashing, token sessions, role selection, login rate limiting |
-| Dashboard | Vehicle totals, fuel cost, average mileage, insurance alerts, recent fuel activity, upcoming services |
-| Vehicle Registry | Add and delete cars, motorcycles, trucks, buses, microbuses, and other vehicles |
-| Fuel & Mileage | Record fill-ups, validate odometer progression, calculate cost, calculate real-world mileage |
-| Saved Locations | Capture browser geolocation snapshots, accuracy information, Google Maps links |
-| Maintenance | Store garage, service type, date, cost, notes, next-service date, and overdue reminders |
-| Insurance | Store providers, policy numbers, premiums, expiry dates, and 30-day alerts |
-| Service Directory | Add public petrol pump and garage listings with phone numbers, prices, and map coordinates |
-| Administration | View platform totals and safe user metadata without exposing password information |
-| Data Integrity | Vehicle deletion automatically removes related fuel, maintenance, insurance, and location records |
-
-## Supported roles
-
-| Role | Access |
-|---|---|
-| Vehicle Owner | Personal vehicles and all related records |
-| Driver | Assigned personal workspace and vehicle records |
-| Petrol Pump Owner | Vehicle tools and petrol pump directory listings |
-| Garage Owner | Vehicle tools and garage directory listings |
-| Administrator | Platform-wide records, statistics, and registered users |
-
-## Demo administrator
+### Demo account
 
 ```text
 Email: admin@drivecare.app
 Password: admin123
 ```
 
-> Change the demo password before using this application in a public or production environment.
+The Pages demo automatically opens the sample administrator workspace. Use **Reset demo data** to restore the original sample records.
+
+## Screenshots
+
+### Dashboard
+
+![DriveCare Hub dashboard](screenshots/s1.png)
+
+### Vehicle management
+
+![DriveCare Hub vehicle management](screenshots/s2.png)
+
+### Fuel and mileage
+
+![DriveCare Hub fuel and mileage management](screenshots/s3.png)
+
+## Project overview
+
+DriveCare Hub provides one organised workspace for vehicle owners, drivers, petrol pump owners, garage owners, and administrators. It can manage vehicles, fuel costs, mileage, maintenance history, insurance policies, saved locations, petrol pumps, garages, users, and operational alerts.
+
+The repository contains two operating modes:
+
+| Mode | Purpose | Data storage |
+|---|---|---|
+| GitHub Pages demo | Free public frontend demonstration | Visitor browser `localStorage` |
+| Full-stack application | Local use or deployment to a Node.js hosting platform | Atomic JSON database file |
+
+## Main features
+
+| Module | Capabilities |
+|---|---|
+| Authentication | Registration, login, logout, password hashing, token sessions, role selection, and login rate limiting |
+| Dashboard | Vehicle totals, fuel spending, average mileage, insurance alerts, recent activity, and service reminders |
+| Vehicle Registry | Add and delete cars, motorcycles, trucks, buses, microbuses, and other vehicles |
+| Fuel & Mileage | Record fill-ups, validate odometer progression, calculate cost, and calculate mileage |
+| Saved Locations | Capture browser geolocation snapshots with accuracy and Google Maps links |
+| Maintenance | Store garage, service type, date, cost, notes, next-service date, and overdue information |
+| Insurance | Store providers, policy numbers, premiums, expiry dates, and deadline alerts |
+| Service Directory | Manage petrol pump and garage listings with phone numbers, prices, and map coordinates |
+| Administration | Review platform totals and safe user metadata without exposing passwords |
+| Data Integrity | Deleting a vehicle also removes its related fuel, service, insurance, and location records |
+
+## Supported roles
+
+| Role | Access |
+|---|---|
+| Vehicle Owner | Personal vehicles and related records |
+| Driver | Personal workspace and vehicle records |
+| Petrol Pump Owner | Vehicle tools and petrol pump directory listings |
+| Garage Owner | Vehicle tools and garage directory listings |
+| Administrator | Platform-wide records, statistics, and registered users |
 
 ## Technology stack
 
 ### Frontend
 
 - Semantic HTML5
-- Modern CSS3
-- Responsive desktop, tablet, and mobile layouts
+- Modern responsive CSS3
 - Modular JavaScript ES modules
 - Browser Geolocation API
 - Fetch API
+- Browser `localStorage` demo adapter
 - Inline SVG icon system
 - No frontend runtime dependencies
 
@@ -82,56 +93,21 @@ Password: admin123
 - Native Node.js HTTP server
 - PBKDF2-SHA512 password hashing
 - Cryptographically secure session tokens
-- JSON file persistence with atomic writes
-- Server-side validation and role-based access control
-- Static frontend hosting
+- Role-based access control
+- Server-side input validation
+- Atomic JSON persistence
+- Security and content-policy headers
+- No third-party runtime dependencies
 
-### Quality assurance
-
-- Native Node.js test runner
-- API integration tests
-- Automated syntax checks for every JavaScript module
-- Authentication and permission tests
-- Validation and cascade-deletion tests
-
-## Security improvements
-
-The original project stored user passwords and application data directly in browser local storage. The rebuilt project fixes that architecture.
-
-- Passwords are hashed with PBKDF2-SHA512 and a unique random salt.
-- Plaintext passwords are never stored in the browser or returned by the API.
-- Sessions use random 256-bit bearer tokens with expiry times.
-- Private routes reject unauthenticated requests.
-- Non-admin users only receive records they are allowed to access.
-- Login attempts are rate limited by IP address.
-- Request bodies have a maximum size.
-- Inputs are trimmed, length-limited, type-checked, and validated.
-- User-provided content is escaped before frontend rendering.
-- Security headers include CSP, `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy`.
-- Database writes use a temporary file and atomic rename to reduce corruption risk.
-- Mutating API requests are serialised to prevent overlapping JSON writes.
-
-## Important fixes from the previous version
-
-- Replaced the 1,486-line monolithic frontend component with organised modules.
-- Added a real backend instead of browser-only local storage.
-- Removed plaintext password storage.
-- Removed unused Firebase and router dependencies.
-- Removed duplicate `type="date"` attributes.
-- Removed the duplicated geolocation error notification.
-- Added proper numeric input types and backend validation.
-- Prevented fuel logs from using a lower or equal odometer reading.
-- Added record deletion and vehicle-related cascade cleanup.
-- Added mobile navigation and responsive layouts.
-- Standardised the font, spacing, colour system, cards, forms, and status states.
-- Added safe role-based administration data.
-- Added automated integration tests and a dependency-free lint process.
-
-## Folder structure
+## Repository structure
 
 ```text
 drivecare-hub/
+├── .github/
+│   └── workflows/
+│       └── deploy-pages.yml       # Publishes only client/ to GitHub Pages
 ├── client/
+│   ├── .nojekyll
 │   ├── assets/
 │   │   ├── favicon.svg
 │   │   └── styles.css
@@ -146,15 +122,22 @@ drivecare-hub/
 │   │   │   ├── service.js
 │   │   │   ├── tracking.js
 │   │   │   └── vehicles.js
-│   │   ├── api.js
+│   │   ├── api.js                 # Selects backend API or browser demo adapter
 │   │   ├── components.js
 │   │   ├── constants.js
+│   │   ├── demo-data.js           # GitHub Pages sample database
 │   │   ├── icons.js
 │   │   ├── main.js
 │   │   └── utils.js
 │   └── index.html
 ├── docs/
-│   └── ARCHITECTURE.md
+│   ├── ARCHITECTURE.md
+│   ├── AUDIT_REPORT.md
+│   └── GITHUB_PAGES.md
+├── screenshots/
+│   ├── s1.png
+│   ├── s2.png
+│   └── s3.png
 ├── scripts/
 │   └── lint.mjs
 ├── server/
@@ -166,16 +149,20 @@ drivecare-hub/
 │   │   └── http.mjs
 │   └── index.mjs
 ├── tests/
+│   ├── demo.test.mjs
+│   ├── render.test.mjs
+│   ├── security.test.mjs
 │   └── server.test.mjs
 ├── .env.example
 ├── .gitignore
+├── CHANGELOG.md
 ├── LICENSE
 ├── package-lock.json
 ├── package.json
 └── README.md
 ```
 
-## Local installation
+## Run the complete full-stack application
 
 ### 1. Clone the repository
 
@@ -192,12 +179,13 @@ node --version
 
 Use Node.js **20.11 or newer**.
 
-### 3. Install the project
+### 3. Install and verify
 
-The application has no third-party runtime dependencies, but this command verifies the package lock:
+The project has no third-party runtime dependencies. Running `npm install` verifies the package lock.
 
 ```bash
 npm install
+npm run check
 ```
 
 ### 4. Start development mode
@@ -218,22 +206,34 @@ http://localhost:4000
 npm start
 ```
 
-## Environment variables
+## GitHub Pages deployment
 
-Copy the example file when custom configuration is required:
+The included workflow publishes only the contents of `client/`:
 
-```bash
-cp .env.example .env
+```text
+.github/workflows/deploy-pages.yml
 ```
+
+After uploading the project to GitHub:
+
+1. Open the repository.
+2. Go to **Settings → Pages**.
+3. Under **Build and deployment**, choose **GitHub Actions**.
+4. Open the **Actions** tab and allow the deployment workflow to finish.
+5. Visit `https://shawn-cse.github.io/drivecare-hub/`.
+
+The workflow does not upload `server/`, tests, documentation, or private runtime data to the Pages website. Those files remain visible only as repository source code.
+
+More details are available in [docs/GITHUB_PAGES.md](docs/GITHUB_PAGES.md).
+
+## Environment variables
 
 | Variable | Default | Description |
 |---|---:|---|
 | `PORT` | `4000` | HTTP server port |
 | `APP_ORIGIN` | `http://localhost:5173` | Optional additional allowed development origin |
-| `SESSION_TTL_HOURS` | `24` | Session token lifetime |
+| `SESSION_TTL_HOURS` | `24` | Session-token lifetime |
 | `DATABASE_FILE` | `server/data/database.json` | Custom JSON database path |
-
-Node.js does not automatically load `.env` files in this dependency-free configuration. Set variables in the terminal or hosting dashboard.
 
 Linux/macOS example:
 
@@ -255,9 +255,9 @@ npm start
 |---|---|
 | `npm run dev` | Start the backend with Node.js watch mode |
 | `npm start` | Start the production server |
-| `npm run lint` | Syntax-check all frontend, backend, and script modules |
-| `npm test` | Run API integration tests |
-| `npm run check` | Run syntax checks and all tests |
+| `npm run lint` | Syntax-check frontend, backend, tests, and scripts |
+| `npm test` | Run automated tests |
+| `npm run check` | Run all syntax checks and tests |
 
 ## API summary
 
@@ -287,80 +287,72 @@ npm start
 
 ## Mileage calculation
 
-Mileage is calculated when at least two fuel records exist for the same vehicle.
-
 ```text
 Distance travelled = Current odometer - Previous odometer
 Mileage = Distance travelled / Current fuel quantity
 ```
 
-Example:
+At least two fuel records are required for a vehicle before mileage can be calculated.
 
-```text
-Previous odometer: 10,000 km
-Current odometer: 10,270 km
-Fuel quantity: 18 L
-Distance travelled: 270 km
-Mileage: 270 / 18 = 15 km/L
-```
+## Security improvements
 
-## Data storage
+- Passwords are hashed with PBKDF2-SHA512 and unique random salts.
+- Plaintext passwords are not stored in the browser or returned by the backend API.
+- Sessions use random 256-bit bearer tokens with expiry times.
+- Private API routes reject unauthenticated requests.
+- Non-administrator users receive only authorised records.
+- Login attempts are rate limited by IP address.
+- Request bodies have a maximum size.
+- Inputs are trimmed, length-limited, type-checked, and validated.
+- User-provided content is escaped before frontend rendering.
+- Security headers include CSP, `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy`.
+- Database writes use a temporary file and atomic rename.
+- Mutating backend requests are serialised to reduce conflicting writes.
 
-The application creates this file automatically on first launch:
-
-```text
-server/data/database.json
-```
-
-The database file is excluded from Git to protect user data.
-
-The JSON database is appropriate for a portfolio project, local use, demonstrations, and a single small server instance. For a production system with multiple server instances or substantial traffic, migrate the database layer to PostgreSQL, MySQL, or another managed database.
-
-## Deployment guidance
-
-Because the backend writes to a local JSON file, deploy it to a platform with persistent disk storage, such as:
-
-- A VPS
-- Railway with a persistent volume
-- Render with a persistent disk
-- Fly.io with a mounted volume
-- Docker on a server with a mounted data directory
-
-Do not rely on ephemeral serverless file systems for permanent data. When deploying, set a persistent `DATABASE_FILE` path and replace the demo administrator credentials.
+> The browser-only Pages demo is intentionally a public demonstration. Do not store sensitive or real user data in that mode.
 
 ## Quality assurance
 
-The following checks were completed successfully:
+Current verification result:
 
 ```text
-Source modules checked: 19
-Automated tests: 6 passed
-Failed tests: 0
+Source files checked: 20
+Automated tests passed: 7
+Automated tests failed: 0
+Demo adapter CRUD test: included
 ```
 
-Test coverage includes:
+Tests cover:
 
-- Health endpoint and frontend delivery
+- Static frontend delivery
+- Frontend view rendering
 - Administrator authentication
-- Safe user response fields
+- Password hashing
+- HTML escaping
 - Vehicle creation
-- Fuel cost calculation
-- Invalid odometer rejection
+- Fuel-cost calculation
+- Odometer validation
 - User registration
-- Role-filtered data
+- Role filtering
 - Cross-user deletion rejection
 - Vehicle cascade deletion
 - Unauthenticated API rejection
 
-Run the complete verification again with:
+Run verification again with:
 
 ```bash
 npm run check
 ```
 
-## Migration note
+## Data-storage note
 
-Data stored by the previous browser-only VeloNexus version is not automatically imported because that version used a different and insecure local-storage structure. Start with a clean DriveCare Hub database or create a dedicated migration script after reviewing the old browser data.
+The full-stack application creates:
+
+```text
+server/data/database.json
+```
+
+This runtime database is ignored by Git. The JSON database is suitable for demonstrations, local use, and one small server instance. For larger production deployments, replace it with PostgreSQL, MySQL, or another managed transactional database.
 
 ## Author
 
